@@ -13,22 +13,22 @@ const sockIo = require('socket.io');
 const io = sockIo(httpserver.Server(app));
 
 // SockIo
-// io.on('connection', socket => {
-//     socket.on('connect', storageBox => {
-//         socket.join(storageBox);
-//     })
-// });
+io.on('connection', socket => {
+    socket.on('connectRoom', storageBox => {
+        socket.join(storageBox);
+    })
+});
 
 //Mongoose connection to Atlas
-mongoose.connect('mongodb+srv://admin:admin@first-d4xiz.mongodb.net/test?retryWrites=true', {useNewUrlParser: true,});
+mongoose.connect('mongodb+srv://admin:admin@first-d4xiz.mongodb.net/nodestorage?retryWrites=true', {useNewUrlParser: true,});
 
 // ### Middlewares ###
 
 //SockIo
-// app.use( (req, res, exit) => {
-//     req.io = io;
-//     return exit
-// });
+app.use( (req, res, next) => {
+    req.io = io;
+    return next();
+});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true}));

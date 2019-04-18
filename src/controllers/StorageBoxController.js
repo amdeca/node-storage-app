@@ -7,7 +7,10 @@ class StorageBoxController
         return res.json(box);
     }
     async show(req, res) {
-        const box = await StorageBox.findById(req.params.id).populate('files');
+        const box = await StorageBox.findById(req.params.id).populate({
+            path: 'files',
+            options: { sort: { createdAt: -1} }
+        });
         return res.json(box)
     }
 }
