@@ -8,9 +8,8 @@ const app = express();
 app.use(cors());
 
 //Websocket
-const httpserver = require('http');
-const sockIo = require('socket.io');
-const io = sockIo(httpserver.Server(app));
+const httpserver = require('http').Server(app);
+const io = require('socket.io')(httpserver);
 
 // SockIo
 io.on('connection', socket => {
@@ -37,4 +36,4 @@ app.use("/files", express.static(path.resolve(__dirname, "..", "temp")));
 app.use(require('./routes'));
 
 
-app.listen(process.env.PORT || 5555);
+httpserver.listen(process.env.PORT || 5555);
